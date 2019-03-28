@@ -1,6 +1,7 @@
 
 
 def stopAll(motorControl=None, servoControl=None, camera=None, sonar=None, encoder=None, remoteController=None):
+
     if motorControl is not None:
         motorControl.disArm()
 
@@ -18,6 +19,4 @@ def stopAll(motorControl=None, servoControl=None, camera=None, sonar=None, encod
 
     if remoteController is not None:
         remoteController.disable()
-
-
 

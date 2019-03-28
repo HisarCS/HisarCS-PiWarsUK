@@ -55,6 +55,7 @@ class OptimizedPiCamera:
 
             if key == ord("q"):
                 cv2.destroyAllWindows()
+                picamera.closed()
                 break
 
     def disableCamera(self):
@@ -62,4 +63,5 @@ class OptimizedPiCamera:
 
     def closeAllWindows(self):
         self.isWindowShowEnabled = False
+        cv2.destroyAllWindows()
 

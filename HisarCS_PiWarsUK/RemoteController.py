@@ -23,6 +23,7 @@ class RemoteController:
     def startListening(self):
 
         Thread(target=self.__update__, args=()).start()
+        self.isListening = True
         return self
 
     def __update__(self):
