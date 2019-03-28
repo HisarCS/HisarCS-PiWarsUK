@@ -21,7 +21,7 @@ class RemoteController:
         self.isListening = False
 
     def startListening(self):
-
+        self.isListening = True
         Thread(target=self.__update__, args=()).start()
         return self
 
@@ -52,7 +52,7 @@ class RemoteController:
     def getButtons(self):
         return self.buttons
 
-    def verileriOku(self):
+    def readValues(self):
         return self.getLeftJoystick(), self.getRightJoystick(), self.getButtons()
 
     def disable(self):
