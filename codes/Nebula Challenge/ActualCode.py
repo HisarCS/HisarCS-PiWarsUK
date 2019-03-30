@@ -8,8 +8,7 @@ import numpy as np
 
 motor = MotorControl(0, 17, 1, 27)
 motor.armMotors() ## OOOHHH YEAH LIGHTNING IS READY!!!!
-
-
+vs = VideoStream(src=0).start()
 
 
 experimental_values_of_red = (1, 2, 3)
@@ -66,6 +65,9 @@ for c in queue:
                                                                         experimental_values_of_green,
                                                                         experimental_values_of_blue,
                                                                         experimental_values_of_yellow)
+            frame = frame[1]
+            if frame is None:
+                break
 
             ### somehow get the frames
 
@@ -84,6 +86,9 @@ for c in queue:
                                                                        experimental_values_of_green,
                                                                        experimental_values_of_blue,
                                                                        experimental_values_of_yellow)
+            frame = frame[1]
+            if frame is None:
+                break
 
             ### somehow get the frames
 
@@ -102,6 +107,9 @@ for c in queue:
                                                                        experimental_values_of_green,
                                                                        experimental_values_of_blue,
                                                                        experimental_values_of_yellow)
+            frame = frame[1]
+            if frame is None:
+                break
 
             ### somehow get the frames
 
@@ -120,6 +128,9 @@ for c in queue:
                                                                        experimental_values_of_green,
                                                                        experimental_values_of_blue,
                                                                        experimental_values_of_yellow)
+            frame = frame[1]
+            if frame is None:
+                break
 
             ### somehow get the frames
 
@@ -140,7 +151,5 @@ for c in queue:
     motor.setMotorSpeeds(motor.ControllerDataToMotorSpeed(0.0, -0.7)
     sleep(2)
     motor.setMotorSpeeds(motor.ControllerDataToMotorSpeed(0.0, 0.0)
-
-
 
 
