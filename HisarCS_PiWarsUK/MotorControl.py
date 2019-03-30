@@ -1,32 +1,33 @@
-from Aadafruit_servokit import *
+import Adafruit_PCA9685
 import RPi.GPIO as GPIO
+import board
 import pygame
 
 
 
 class MotorControl:
 
-    def __init__(self, rightChannel, rightDIR, leftChannel, leftDIR, GPIONumbering=GPIO.BOARD):
+    def __init__(self, rightChannel, rightDIR, leftChannel, leftDIR, GPIONumbering=GPIO.BCM):
 
         self.rightChannel = rightChannel
         self.leftChannel = leftChannel
         self.GPIONumbering = GPIONumbering
         self.rightDIR = rightDIR
         self.leftDIR = leftDIR
-
+        
         GPIO.setmode(GPIONumbering)
-
-        self.rightMotor = ServoKit(self.rightChannel)
-        self.leftMotor = ServoKit(self.leftChannel)
-
+        
+        self.pwm = Adafruit_PCA9685.PCA9685()
+        self.pwm.set_pwm_freq(1000)
+        
         GPIO.setup(rightDIR, GPIO.OUT)
         GPIO.setup(leftDIR, GPIO.OUT)
-
+       
         self.isArmed = False
 
 
-        self.rightMotor.servo[0].angle = 0
-        self.leftMotor.servo[0].angle = 0
+        #self.kit.servo[self.rightChannel].angle = 0
+        #self.kit.servo[self.leftChannel].angle = 0
 
     def armMotors(self):
         pygame.init()
@@ -47,25 +48,29 @@ class MotorControl:
             self.rightMotorSpeed = rightMotorSpeed
             self.leftMotorSpeed = leftMotorSpeed
 
-            if self.rightMotorSpeed > 0:
-                GPIO.output(self.rightDIR, GPIO.HIGH)
+            if int(self.leftMotorSpeed) > 0:
+                GPIO.output(self.leftDIR, GPIO.HIGH)
+                print("right motors forward")
             else:
-                GPIO.output(self.rightDIR, GPIO.LOW)
+                GPIO.output(self.leftDIR, GPIO.LOW)
+                print("right motors backwards")
 
-            if self.leftMotorSpeed > 0:
+            if int(self.rightMotorSpeed) > 0:
                 GPIO.output(self.rightDIR, GPIO.HIGH)
+                print("left motors forward")
             else:
                 GPIO.output(self.rightDIR, GPIO.LOW)
+                print("left motors backwards")
 
             if self.turbo:
-                self.rightMotor.servo[0].angle = abs(self.rightMotorSpeed) / 1.80
-                self.leftMotor.servo[0].angle = abs(self.leftMotorSpeed) / 1.80
+                self.pwm.set_pwm(self.rightChannel, 0, abs(int(self.rightMotorSpeed*40.95)))
+                self.pwm.set_pwm(self.leftChannel, 0, abs(int(self.leftMotorSpeed*40.95)))
 
             if not self.turbo:
-                self.rightMotor.servo[0].angle = abs(self.rightMotorSpeed) / 1.44
-                self.leftMotor.servo[0].angle = abs(self.leftMotorSpeed) / 1.44
-
+               self.pwm.set_pwm(self.rightChannel, 0, abs(int(self.rightMotorSpeed*40.95*0.8)))
+               self.pwm.set_pwm(self.leftChannel, 0, abs(int(self.leftMotorSpeed*40.95*0.8)))
+               print("set the pwm values:{} {}".format(self.rightMotorSpeed, self.leftMotorSpeed))
         else:
-            self.rightMotor.servo[0].angle = 0
-            self.leftMotor.servo[0].angle = 0
+            self.pwm.set_pwm(self.rightChannel, 0, 0)
+            self.pwm.set_pwm(self.leftChannel, 0, 0)
             print(" You need to arm the motors first!!! ")
