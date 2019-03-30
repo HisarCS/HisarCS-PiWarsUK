@@ -1,0 +1,22 @@
+from gpiozero import DistanceSensor
+from MotorControl import MotorControl
+from time import sleep
+
+motor = MotorControl(0, 17, 1, 27)
+sensor = DistanceSensor(echo=22, trigger=10, max distance=3.0)
+
+motor.armMotors()
+
+turns = [-1, -1, 1, 1, -1, -1, -1, 1]
+
+def turn90(dir):
+	motor.setMotorSpeeds(-60 * dir, 60 * dir)
+	sleep(0.32)
+	motor.setMotorSpeeds(0, 0)
+	sleep(0.1)
+
+for i in turns:
+	while((sensor.distance * 100) <= 5.0):
+		motor.setMotorSpeeds(30, 30)
+		sleep(0.2)
+	turn90(i)
