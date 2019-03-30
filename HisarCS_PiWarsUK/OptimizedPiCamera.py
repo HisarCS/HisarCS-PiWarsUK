@@ -1,5 +1,6 @@
 
 from picamera import PiCamera
+import picamera
 from picamera.array import PiRGBArray
 from threading import Thread
 import cv2
@@ -25,13 +26,11 @@ class OptimizedPiCamera:
         return self
 
     def __updateFrame__(self):
-        
-        while True:
 
-            for frame in self.cameraStream:
+        for frame in self.cameraStream:
 
-                self.currentFrame = frame.array
-                self.rawFrame.truncate(0)
+            self.currentFrame = frame.array
+            self.rawFrame.truncate(0)
 
     def getFrame(self):
 
