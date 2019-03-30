@@ -112,9 +112,7 @@ def visionProcessing(frame, contourThreshValue, colorThreshValue, colorThreshMet
 
     return slope, error, cv2.flip(imutils.rotate(binaryImagePLT, 180), 1)
 
-camera = OptimizedPiCamera()
-camera.startGettingFrames()
-
+vs = cv2.VideoCapture(0)
 motor = MotorControl(0, 17, 1, 27)
 
 
@@ -127,7 +125,7 @@ motor.armMotors() ## OOOHHH YEAH LIGHTNING IS READY!!!!
 
 while True:
     start = time.time()
-    frame = camera.getFrame()
+    frame = vs.read()
 
 
     slope, error, resultFrame = visionProcessing(frame, 600, 90, cv2.THRESH_BINARY_INV) # bu beyaz uzerine siyah cizgileri takip eder. Bu yuzden yarisma esnasinda 4. parametreyi "cv2.THRESH_BINARY" yapip 2. parametreyi 200 gibi bir sayi yapmaniz gerekiyor
@@ -135,8 +133,11 @@ while True:
     elapsed = abs(start - time.time())
     print(slope, error, 1/elapsed)
 
-    camera.showFrame()
-    camera.showFrame("resultant Frame", resultFrame)
+    cv2.imshow("frame", frame)
+    cv2.imshow("resultant Frame", resultFrame)
+
+    if cv2.waitKey(1) == ord("q"):
+        break
 
     ######################       SETTING THE MOTOR SPEEDS       ########################
 
