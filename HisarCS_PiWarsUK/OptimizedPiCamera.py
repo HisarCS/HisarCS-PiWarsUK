@@ -3,6 +3,7 @@ from picamera import PiCamera
 from picamera.array import PiRGBArray
 from threading import Thread
 import cv2
+from time import sleep
 
 class OptimizedPiCamera:
 
@@ -20,6 +21,7 @@ class OptimizedPiCamera:
     def startGettingFrames(self):
 
         Thread(target=self.__updateFrame__, args=()).start()
+        sleep(1)
         return self
 
     def __updateFrame__(self):
