@@ -2,14 +2,15 @@ import cv2
 import imutils
 from threading import Thread
 from time import sleep, time
-from HisarCS_PiWarsUK import MotorControl
+from HisarCS_PiWarsUK import MotorControl, OptimizedPiCamera
 import numpy as np
 
 
 motor = MotorControl(0, 17, 1, 27)
 motor.armMotors() ## OOOHHH YEAH LIGHTNING IS READY!!!!
 
-
+camera = OptimizedPiCamera()
+camera.startGettingFrames()
 
 
 experimental_values_of_red = (1, 2, 3)
@@ -52,6 +53,7 @@ def findColor(frame, lower, upper, threshAreaValue):
             cv2.fillPoly(mask, [approx], 255, lineType=8, shift=0)
             M = cv2.moments(c)
             cX = int(M["m10"] / M["m00"])
+    camera.showFrame("processed", mask)
     return  cX
 
 
@@ -66,8 +68,8 @@ for c in queue:
                                                                         experimental_values_of_green,
                                                                         experimental_values_of_blue,
                                                                         experimental_values_of_yellow)
-
-            ### somehow get the frames
+            frame = camera.getFrame()
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
             cX = findColor(frame, lower, upper, 500)
             if cX > (frame.shape[1]/2.0 + frame.shape[1]*0.25) and cX > (frame.shape[1]/2.0 - frame.shape[1]*0.25): #if the center of the color is between 25% and 75%
@@ -85,7 +87,8 @@ for c in queue:
                                                                        experimental_values_of_blue,
                                                                        experimental_values_of_yellow)
 
-            ### somehow get the frames
+            frame = camera.getFrame()
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
             cX = findColor(frame, lower, upper, 500)
             if cX > (frame.shape[1] / 2.0 + frame.shape[1] * 0.25) and cX > (frame.shape[1] / 2.0 - frame.shape[1] * 0.25):  # if the center of the color is between 25% and 75%
@@ -103,7 +106,8 @@ for c in queue:
                                                                        experimental_values_of_blue,
                                                                        experimental_values_of_yellow)
 
-            ### somehow get the frames
+            frame = camera.getFrame()
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
             cX = findColor(frame, lower, upper, 500)
             if cX > (frame.shape[1] / 2.0 + frame.shape[1] * 0.25) and cX > (frame.shape[1] / 2.0 - frame.shape[1] * 0.25):  # if the center of the color is between 25% and 75%
@@ -121,7 +125,8 @@ for c in queue:
                                                                        experimental_values_of_blue,
                                                                        experimental_values_of_yellow)
 
-            ### somehow get the frames
+            frame = camera.getFrame()
+            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
             cX = findColor(frame, lower, upper, 500)
             if cX > (frame.shape[1] / 2.0 + frame.shape[1] * 0.25) and cX > (frame.shape[1] / 2.0 - frame.shape[1] * 0.25):  # if the center of the color is between 25% and 75%
