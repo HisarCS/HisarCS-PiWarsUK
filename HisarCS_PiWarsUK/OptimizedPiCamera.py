@@ -25,6 +25,7 @@ class OptimizedPiCamera:
         return self
 
     def __updateFrame__(self):
+        
         while True:
 
             for frame in self.cameraStream:

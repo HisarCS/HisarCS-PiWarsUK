@@ -127,7 +127,7 @@ ap.add_argument("-v", "--video", type=str,
                 help="path to input video file")
 args = vars(ap.parse_args())
 
-vs = cv2.VideoCapture(0)
+vs = cv2.VideoCapture(args["video"])
 
 visionProcessor = VisionProcessor()
 
