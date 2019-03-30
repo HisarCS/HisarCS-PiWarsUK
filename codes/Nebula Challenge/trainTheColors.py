@@ -122,7 +122,7 @@ class VisionProcessor:
 
 
 
-camera = OptimizedPiCamera()
+camera = OptimizedPiCamera((320, 240))
 camera.startGettingFrames()
 
 

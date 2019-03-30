@@ -43,8 +43,8 @@ class OptimizedPiCamera:
             self.framesToShow[windowName] = frameToShow
 
         if not self.isWindowShowEnabled:
-            Thread(target=self.__updateWindowFrame__, args=()).start()
             self.isWindowShowEnabled = True
+            Thread(target=self.__updateWindowFrame__, args=()).start()
 
 
     def __updateWindowFrame__(self):
