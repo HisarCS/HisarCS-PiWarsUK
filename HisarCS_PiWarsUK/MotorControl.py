@@ -2,6 +2,7 @@ import Adafruit_PCA9685
 import RPi.GPIO as GPIO
 import board
 import pygame
+import math
 
 
 
@@ -30,14 +31,27 @@ class MotorControl:
         #self.kit.servo[self.leftChannel].angle = 0
 
     def armMotors(self):
-        pygame.init()
-        HeyLightningYouReady = pygame.mixer.Sound("sounds/HeyLightningYouReady.wav")
-        HeyLightningYouReady.play()
+        #pygame.init()
+        #HeyLightningYouReady = pygame.mixer.Sound("sounds/HeyLightningYouReady.wav")
+        #HeyLightningYouReady.play()
         self.isArmed = True
 
     def disArm(self):
         self.isArmed = False
 
+
+    def controllerToMotor(self, x, y):
+        r = math.hypot(x, y)
+        t = math.atan2(y, x)
+
+        t += math.pi / 4
+        left = r * math.cos(t) * math.sqrt(2)
+        right = r * math.sin(t) * math.sqrt(2)
+
+        left = max(-1, min(left, 1))
+        right = max(-1, min(right, 1))
+
+        return int(left * 50), -int(right * 50)
 
     def setMotorSpeeds(self, rightMotorSpeed, leftMotorSpeed, turbo=False):
 
