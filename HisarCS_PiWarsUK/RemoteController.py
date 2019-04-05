@@ -1,5 +1,6 @@
 import pygame
 from threading import Thread
+from time import sleep
 
 
 class RemoteController:
@@ -20,7 +21,8 @@ class RemoteController:
 
         self.isListening = False
 
-    def startListening(self):
+    def startListening(self, frequency):
+        self.frequency = frequency
         self.isListening = True
         Thread(target=self.__update__, args=()).start()
         self.isListening = True
@@ -29,6 +31,7 @@ class RemoteController:
     def __update__(self):
 
         while self.isListening:
+            sleep(1/self.frequency)
             for e in pygame.event.get():
                 if (e.type == pygame.JOYBUTTONDOWN and e.button not in self.buttons):
                     self.buttons.append(e.button)
